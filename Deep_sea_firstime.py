@@ -109,4 +109,30 @@ for file in copy_file_list:
 target_usb_device = select_usb_drive()
 folder_name = datetime.datetime.now().strftime('%Y-%m-%d')
 extract_zip(folder_name, copy_file_list)
+
+def modify_ini_file():
+    ini_file = folder_name + '/bootloader/hekate_ipl.ini'
+    cwd = os.getcwd()
+    with open(cwd + '\\'+ini_file, 'r') as f:
+        lines = f.readlines()
+        del_lines=[]
+        for idx, line in enumerate(lines):
+            if 'SYSNAND' in line:
+                del_lines.append(idx+1)
+            if 'EMUMMC' in line:
+                del_lines.append(idx-2)
+                break
+        del lines[del_lines[0]:del_lines[1]]
+        lines.insert(del_lines[0], 'payload=bootloader/payloads/fusee.bin\n')
+    with open(cwd + '\\'+ini_file, 'w') as f:
+        f.writelines(lines)
+
+modify_ini_file()
 copy_files(folder_name, target_usb_device)
+print("모든 복사가 끝났습니다. 다음에 할일")
+print("=========================================================================================")
+print("1. 리커버리 모드 진입 : 볼륨 업 + 전원 + 지그")
+print("2. TegraRCM GUI 실행 후 usb드라이브 최상위 폴더를 찾아보면 hekae_ctcaer_x.bin 을 넣을 파일로 선택")
+print("3. Inject payload 클릭하여 Hekate 부팅 후 첫번째 아이콘 선택")
+print("=========================================================================================")
+os.system('Pause')
