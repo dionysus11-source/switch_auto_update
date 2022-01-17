@@ -2,7 +2,8 @@
 
 Tool for making atmosphere/hekate booting SD card.
 
-<first time user>
+## First time user
+
 1. Insert usd drive including micro sd card
 
 2. run exe file
@@ -20,7 +21,7 @@ Tool for making atmosphere/hekate booting SD card.
 8. TegraRCM GUI 프로그램의 Inject payload 클릭하여 Hekate로 부팅 한 후 첫번째 아이콘 선택
   
   
-<update>
+## update
 
 1. Insert usd drive including micro sc
 
