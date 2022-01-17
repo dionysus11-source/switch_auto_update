@@ -6,19 +6,17 @@ Tool for making atmosphere/hekate booting SD card.
 
 1. Insert usd drive including micro sd card
 
-2. run exe file
+2. run  auto download program -Deep_sea_firstime_v1.exe
 
-3. start auto download -Deep_sea_firstime_v1.exe
+3. after download is complete, select your usb driver to install
 
-4. after download is complete, select your usb driver to install
+4. after copy is complete, copy "hekate_ctcaer_5.6.5.bin" file in SD card's root folder to your local computer
 
-5. after copy is complete, copy "hekate_ctcaer_5.6.5.bin" file in SD card's root folder to your local computer
+5. recovery mode : 볼륨 업 + 전원 + 지그
 
-6. recovery mode : 볼륨 업 + 전원 + 지그
+6. TegraRCM GUI 실행 후 usb드라이브 최상위 폴더를 찾아보면 hekae_ctcaer_x.bin 을 넣을 파일로 선택
 
-7. TegraRCM GUI 실행 후 usb드라이브 최상위 폴더를 찾아보면 hekae_ctcaer_x.bin 을 넣을 파일로 선택
-
-8. TegraRCM GUI 프로그램의 Inject payload 클릭하여 Hekate로 부팅 한 후 첫번째 아이콘 선택
+7. TegraRCM GUI 프로그램의 Inject payload 클릭하여 Hekate로 부팅 한 후 첫번째 아이콘 선택
   
   
 ## update
