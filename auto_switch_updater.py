@@ -85,6 +85,11 @@ for copy_file in copy_file_list:
         fantasy_zip = zipfile.ZipFile(copy_file)
         fantasy_zip.extractall(cwd + '\\'+now) 
         fantasy_zip.close()
+for copy_file in copy_file_list:
+    if 'bin' in copy_file:
+        continue
+    else:
+        os.remove(copy_file)
 
 def recursive_overwrite(src, dest, ignore=None):
     if os.path.isdir(src):

@@ -115,6 +115,11 @@ def run(target_usb_device, progress_bar):
     modify_ini_file(folder_name)
     progress_bar.setValue(80)
     copy_files(folder_name, target_usb_device)
+    for copy_file in copy_file_list:
+        if 'bin' in copy_file:
+            continue
+        else:
+            os.remove(copy_file)
     ("모든 복사가 끝났습니다. 다음에 할일")
     logging.error("=========================================================================================")
     logging.error("1. 리커버리 모드 진입 : 볼륨 업 + 전원 + 지그")
