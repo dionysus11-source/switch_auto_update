@@ -2,31 +2,14 @@
 
 Tool for making atmosphere/hekate booting SD card.
 
-## First time user
+## How to use
 
 1. Insert usd drive including micro sd card
 
-2. run  auto download program -Deep_sea_firstime_v1.exe
+2. run program
 
-3. after download is complete, select your usb driver to install
+3. select usb driver
 
-4. after copy is complete, copy "hekate_ctcaer_5.6.5.bin" file in SD card's root folder to your local computer
+4. if you are first user, select "Make Deepsea Firsttime", just for update, select "Update hekate/atmospere'
 
-5. recovery mode : 볼륨 업 + 전원 + 지그
-
-6. TegraRCM GUI 실행 후 usb드라이브 최상위 폴더를 찾아보면 hekae_ctcaer_x.bin 을 넣을 파일로 선택
-
-7. TegraRCM GUI 프로그램의 Inject payload 클릭하여 Hekate로 부팅 한 후 첫번째 아이콘 선택
-  
-  
-## update
-
-1. Insert usd drive including micro sc
-
-2. run exe file
-
-3. start auto download - auto_switch_updater_V2.exe
-
-4. after download is complete, select your usb driver to install
-
-5. after copy is complete, follow next step
+5. after copy is completed, follow guide in text viewer
