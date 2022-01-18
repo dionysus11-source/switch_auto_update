@@ -7,8 +7,7 @@ from glob import glob
 from subprocess import check_output, CalledProcessError
 import shutil
 import datetime
-import wmi
-import sys
+import logging
 
 def download(url, file_name):
     with open(file_name, "wb") as file:
@@ -33,26 +32,26 @@ def download_url(url, target):
 def run(target_usb_device, progress_bar):
     downloadlist = ['https://github.com/Atmosphere-NX/Atmosphere/releases', 'https://github.com/CTCaer/hekate/releases','https://github.com/Atmosphere-NX/Atmosphere/releases','https://github.com/ITotalJustice/patches/releases']
     keywordlist = ['download','download','fusee.bin','fusee.zip']
-    print('설치할 파일을 다운로드 중입니다.')
+    logging.error('설치할 파일을 다운로드 중입니다.')
     progress_bar.setValue(10)
     copy_file_list = []
     for i in range(len(downloadlist)):
         copy_file_list.append(download_url(downloadlist[i], keywordlist[i]))
 
-    print('다운로드가 완료 되었습니다.')
+    logging.error('다운로드가 완료 되었습니다.')
     progress_bar.setValue(50)
-    print('===Download list====')
+    logging.error('===Download list====')
     for file in copy_file_list:
-        print(file)
+        logging.error(file)
 
-    print("파일을 usb 드라이브로 복사 중입니다.")
+    logging.error("파일을 usb 드라이브로 복사 중입니다.")
     cwd = os.getcwd()
     now = datetime.datetime.now().strftime('%Y-%m-%d')
     try:
         if not os.path.exists(now):
             os.makedirs(now)
     except OSError:
-        print ('Error: Creating directory. ' +  now)
+        logging.error ('Error: Creating directory. ' +  now)
 
     if os.path.exists(now):
         shutil.rmtree(now)
@@ -83,9 +82,9 @@ def run(target_usb_device, progress_bar):
             shutil.copyfile(src, dest)
     progress_bar.setValue(80)
     recursive_overwrite('./'+ now, target_usb_device)
-    print("모든 복사가 끝났습니다. 다음에 할일")
-    print("=========================================================================================")
-    print("1. 리커버리 모드 진입 : 볼륨 업 + 전원 + 지그")
-    print("2. TegraRCM GUI 실행 후 usb드라이브 최상후 폴더의 hekate_ctcaer_x.bin 을 넣을 파일로 선택")
-    print("3. Inject payload 클릭하여 Hekate 부팅 후 첫번째 아이콘 클릭")
-    print("=========================================================================================")
+    logging.error("모든 복사가 끝났습니다. 다음에 할일")
+    logging.error("=========================================================================================")
+    logging.error("1. 리커버리 모드 진입 : 볼륨 업 + 전원 + 지그")
+    logging.error("2. TegraRCM GUI 실행 후 usb드라이브 최상후 폴더의 hekate_ctcaer_x.bin 을 넣을 파일로 선택")
+    logging.error("3. Inject payload 클릭하여 Hekate 부팅 후 첫번째 아이콘 클릭")
+    logging.error("=========================================================================================")
