@@ -94,10 +94,11 @@ def extract_zip(folder_name, files):
 def copy_files(src, dst):
     recursive_overwrite('./'+ src, dst)
 
-def run(target_usb_device):
+def run(target_usb_device, progress_bar):
     downloadlist = ['https://github.com/Team-Neptune/DeepSea/releases','https://github.com/ITotalJustice/patches/releases','https://github.com/Atmosphere-NX/Atmosphere/releases']
     keywordlist = ['normal','fusee.zip', 'fusee.bin']
     print('설치할 파일을 다운로드 중입니다.')
+    progress_bar.setValue(10)
     copy_file_list = []
     for i in range(len(downloadlist)):
       copy_file_list.append(download_url(downloadlist[i], keywordlist[i]))
@@ -106,11 +107,12 @@ def run(target_usb_device):
     print('===Download list====')
     for file in copy_file_list:
         print(file)
+    progress_bar.setValue(50)
 
-    target_usb_device = select_usb_drive()
     folder_name = datetime.datetime.now().strftime('%Y-%m-%d')
     extract_zip(folder_name, copy_file_list)
     modify_ini_file(folder_name)
+    progress_bar.setValue(80)
     copy_files(folder_name, target_usb_device)
     print("모든 복사가 끝났습니다. 다음에 할일")
     print("=========================================================================================")
@@ -118,7 +120,6 @@ def run(target_usb_device):
     print("2. TegraRCM GUI 실행 후 usb드라이브 최상위 폴더를 찾아보면 hekae_ctcaer_x.bin 을 넣을 파일로 선택")
     print("3. Inject payload 클릭하여 Hekate 부팅 후 첫번째 아이콘 선택")
     print("=========================================================================================")
-    os.system('Pause')
 
 def modify_ini_file(folder_name):
     ini_file = folder_name + '/bootloader/hekate_ipl.ini'
@@ -136,5 +137,3 @@ def modify_ini_file(folder_name):
         lines.insert(del_lines[0], 'payload=bootloader/payloads/fusee.bin\n')
     with open(cwd + '\\'+ini_file, 'w') as f:
         f.writelines(lines)
-
-run("H:")
