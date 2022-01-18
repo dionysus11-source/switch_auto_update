@@ -11,22 +11,14 @@ import logging
 os.environ['QT_API'] = 'pyqt5'
 
 form_class = uic.loadUiType("switch_downloader.ui")[0]
-#class LogStringHandler(logging.Handler):
-#    def __init__(self, target_widget):
-#        super(LogStringHandler, self).__init__()
-#        self.text_widget =target_widget 
-
-#    def emit(self, record):
-#        print('handler is called')
-#        self.target_widget.append(record.asctime + ' -- ' + record.getMessage())
 class LogStringHandler(logging.Handler):
     def __init__(self, target_widget):
         super(LogStringHandler, self).__init__()
         self.target_widget=target_widget 
 
     def emit(self, record):
-        print('handler is called')
         self.target_widget.append(' -- ' + record.getMessage())
+        
 class WindowClass(QMainWindow, form_class):
     __selected_drive = None
     def __init__(self):
@@ -37,9 +29,6 @@ class WindowClass(QMainWindow, form_class):
         self.deepseaButton.clicked.connect(self.deepsea_first)
         self.updaterButton.clicked.connect(self.update_cfw)
         self.progressBar.setValue(0)
-        #logger = logging.getLogger()
-        #logger.addHandler(LogStringHandler(self.logText))
-        #self.logText.append("start")
         logger = logging.getLogger()
         logger.addHandler(LogStringHandler(self.testTextBrowser))
         logging.error('hekate/atmosphere make program')
