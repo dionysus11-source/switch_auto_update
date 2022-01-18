@@ -6,7 +6,7 @@ import qdarkstyle
 import wmi
 import Deepsea
 import updater
-#import logging
+import logging
 
 os.environ['QT_API'] = 'pyqt5'
 
@@ -19,7 +19,14 @@ form_class = uic.loadUiType("switch_downloader.ui")[0]
 #    def emit(self, record):
 #        print('handler is called')
 #        self.target_widget.append(record.asctime + ' -- ' + record.getMessage())
+class LogStringHandler(logging.Handler):
+    def __init__(self, target_widget):
+        super(LogStringHandler, self).__init__()
+        self.target_widget=target_widget 
 
+    def emit(self, record):
+        print('handler is called')
+        self.target_widget.append(' -- ' + record.getMessage())
 class WindowClass(QMainWindow, form_class):
     __selected_drive = None
     def __init__(self):
@@ -33,19 +40,21 @@ class WindowClass(QMainWindow, form_class):
         #logger = logging.getLogger()
         #logger.addHandler(LogStringHandler(self.logText))
         #self.logText.append("start")
-
+        logger = logging.getLogger()
+        logger.addHandler(LogStringHandler(self.testTextBrowser))
+        logging.error('hekate/atmosphere make program')
 
     def deepsea_first(self):
         self.progressBar.setValue(0)
         if self.__selected_drive is None:
-            print('선택된 드라이브가 없습니다.')
+            logging.error('선택된 드라이브가 없습니다.')
             return
         Deepsea.run(self.__selected_drive, self.progressBar)
         self.progressBar.setValue(100)
     def update_cfw(self):
         self.progressBar.setValue(0)
         if self.__selected_drive is None:
-            print('선택된 드라이브가 없습니다.')
+            logging.error('선택된 드라이브가 없습니다.')
             return
         updater.run(self.__selected_drive, self.progressBar)
         self.progressBar.setValue(100)
@@ -56,9 +65,9 @@ class WindowClass(QMainWindow, form_class):
         for disk in c.Win32_LogicalDisk():
             if disk.Description == '이동식 디스크':
                 usb_devices.append(disk.DeviceID )
-        print("==== 현재 연결된 usb 목록 ====")
+        logging.error("==== 현재 연결된 usb 목록 ====")
         for index, value in enumerate(usb_devices):
-            print(str(index) + ": " + value)
+            logging.error(str(index) + ": " + value)
             self.usbSelect.addItem(value)
         if len(usb_devices) > 1:
             self.__selected_drive = self.usbSelect.currentText()
@@ -66,7 +75,7 @@ class WindowClass(QMainWindow, form_class):
 
     def select_usb_drive(self):
         self.__selected_drive = self.usbSelect.currentText()
-        print("선택된 드라이브: " + self.__selected_drive)
+        logging.error("선택된 드라이브: " + self.__selected_drive)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
