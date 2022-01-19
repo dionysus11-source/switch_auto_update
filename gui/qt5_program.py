@@ -20,7 +20,6 @@ class LogStringHandler(logging.Handler):
         self.target_widget.append(' -- ' + record.getMessage())
         
 class WindowClass(QMainWindow, form_class):
-    __selected_drive = None
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -32,17 +31,20 @@ class WindowClass(QMainWindow, form_class):
         logger = logging.getLogger()
         logger.addHandler(LogStringHandler(self.testTextBrowser))
         logging.error('hekate/atmosphere make program')
+        self.select_usb_drive()
 
     def deepsea_first(self):
         self.progressBar.setValue(0)
-        if self.__selected_drive is None:
+        print(self.__selected_drive)
+        if self.__selected_drive is "":
             logging.error('선택된 드라이브가 없습니다.')
             return
         Deepsea.run(self.__selected_drive, self.progressBar)
         self.progressBar.setValue(100)
     def update_cfw(self):
         self.progressBar.setValue(0)
-        if self.__selected_drive is None:
+        print(self.__selected_drive)
+        if self.__selected_drive is "":
             logging.error('선택된 드라이브가 없습니다.')
             return
         updater.run(self.__selected_drive, self.progressBar)
