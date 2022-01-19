@@ -1,6 +1,7 @@
 import sys
 import os
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import QThread
 from PyQt5 import uic
 import qdarkstyle
 import wmi
@@ -9,6 +10,8 @@ import updater
 import logging
 
 os.environ['QT_API'] = 'pyqt5'
+
+
 
 form_class = uic.loadUiType("switch_downloader.ui")[0]
 class LogStringHandler(logging.Handler):
@@ -32,11 +35,13 @@ class WindowClass(QMainWindow, form_class):
         logger.addHandler(LogStringHandler(self.testTextBrowser))
         logging.error('hekate/atmosphere make program')
         self.select_usb_drive()
+        x = usbThread(self,parent=self)
+        x.start()
 
     def deepsea_first(self):
         self.progressBar.setValue(0)
         print(self.__selected_drive)
-        if self.__selected_drive is "":
+        if self.__selected_drive == "":
             logging.error('선택된 드라이브가 없습니다.')
             return
         Deepsea.run(self.__selected_drive, self.progressBar)
@@ -44,7 +49,7 @@ class WindowClass(QMainWindow, form_class):
     def update_cfw(self):
         self.progressBar.setValue(0)
         print(self.__selected_drive)
-        if self.__selected_drive is "":
+        if self.__selected_drive == "":
             logging.error('선택된 드라이브가 없습니다.')
             return
         updater.run(self.__selected_drive, self.progressBar)
@@ -68,9 +73,24 @@ class WindowClass(QMainWindow, form_class):
         self.__selected_drive = self.usbSelect.currentText()
         logging.error("선택된 드라이브: " + self.__selected_drive)
 
+class usbThread(QThread):
+    def __init__(self, app,parent=None):
+        super().__init__(parent)
+        self.app = app
+    def run(self):
+        raw_wql = "SELECT * FROM __InstanceCreationEvent WITHIN 2 WHERE TargetInstance ISA \'Win32_USBHub\'"
+        c = wmi.WMI()
+        watcher = c.watch_for(raw_wql=raw_wql)
+        while 1:
+            usb = watcher()
+            self.app.update_usb_drive()
+        print('thread end')
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
     window = WindowClass()
     window.show()
     app.exec_()
+
+
