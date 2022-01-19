@@ -1,2 +1,3 @@
 ./gui/dist
+./gui/build
 *.ipynb

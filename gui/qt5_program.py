@@ -8,6 +8,7 @@ import wmi
 import Deepsea
 import updater
 import logging
+import pythoncom
 
 os.environ['QT_API'] = 'pyqt5'
 
@@ -26,7 +27,9 @@ class WindowClass(QMainWindow, form_class):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.update_usb_drive()
+        #self.update_usb_drive()
+        x = usbThread(self,parent=self)
+        x.start()
         self.usbSelect.currentIndexChanged.connect(self.select_usb_drive)
         self.deepseaButton.clicked.connect(self.deepsea_first)
         self.updaterButton.clicked.connect(self.update_cfw)
@@ -35,8 +38,6 @@ class WindowClass(QMainWindow, form_class):
         logger.addHandler(LogStringHandler(self.testTextBrowser))
         logging.error('hekate/atmosphere make program')
         self.select_usb_drive()
-        x = usbThread(self,parent=self)
-        x.start()
 
     def deepsea_first(self):
         self.progressBar.setValue(0)
@@ -56,9 +57,9 @@ class WindowClass(QMainWindow, form_class):
         self.progressBar.setValue(100)
     def update_usb_drive(self):
         self.usbSelect.clear()
-        c = wmi.WMI()
+        self.wmi = wmi.WMI()
         usb_devices = []
-        for disk in c.Win32_LogicalDisk():
+        for disk in self.wmi.Win32_LogicalDisk():
             if disk.Description == '이동식 디스크':
                 usb_devices.append(disk.DeviceID )
         logging.error("==== 현재 연결된 usb 목록 ====")
@@ -79,11 +80,23 @@ class usbThread(QThread):
         self.app = app
     def run(self):
         raw_wql = "SELECT * FROM __InstanceCreationEvent WITHIN 2 WHERE TargetInstance ISA \'Win32_USBHub\'"
+        pythoncom.CoInitialize()
         c = wmi.WMI()
         watcher = c.watch_for(raw_wql=raw_wql)
         while 1:
+            self.app.usbSelect.clear()
+            usb_devices = []
+            for disk in c.Win32_LogicalDisk():
+                if disk.Description == '이동식 디스크':
+                    usb_devices.append(disk.DeviceID )
+            logging.error("==== 현재 연결된 usb 목록 ====")
+            for index, value in enumerate(usb_devices):
+                logging.error(str(index) + ": " + value)
+                self.app.usbSelect.addItem(value)
+            if len(usb_devices) > 1:
+                self.__selected_drive = self.app.usbSelect.currentText()
+                self.app.update_usb_drive()
             usb = watcher()
-            self.app.update_usb_drive()
         print('thread end')
 
 if __name__ == '__main__':
