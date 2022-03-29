@@ -12,7 +12,13 @@ Tool for making atmosphere/hekate booting SD card.
 
 4. 처음 사용자인 경우 Make Deepsea Firsttime, 이미 설치한 적 있고 단순히 업데이트를 위해서라면 "Update hekate/atmospere'
 
-5. 복사가 끝난 후 화면에 나오는 가이드 대로 실행
+5. usb드라이브 최상위 폴더를 찾아보면 hekae_ctcaer_x.bin 을 pc에 복사한 후에 usb를 뽑고 sd 카드를 스위치에 넣는다 ")
+
+6. 리커버리 모드 진입 : 볼륨 업 + 전원 + 지그" 후에 TegraRCM GUI 실행 
+
+7. TegraRCM Gui에서 hekae_ctcaer_x.bin을 선택 후 Inject payload 클릭하여 Hekate로 부팅 
+
+8. 아이콘 중에서 payloads 아이콘 클릭-> fusee.bin 선택하여 부팅
 
 ---------------------------------------------------------------------------------
 
