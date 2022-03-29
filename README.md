@@ -4,7 +4,7 @@ Tool for making atmosphere/hekate booting SD card.
 
 ## How to use
 
-1. 마이크로 sd를 usb 어댑터에 넣은 후 pc에 연결합니다.
+1. 마이크로 sd를 usb 리더기에 넣은 후 pc에 연결합니다.
 
 2. 프로그램을 실행
 
