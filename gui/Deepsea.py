@@ -17,17 +17,14 @@ def download(url, file_name):
         response = requests.get(url)
         file.write(response.content)
 
-def download_url(url, target):
+def download_url(url):
+    print(url)
     header = {"user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"}
     r = requests.get(url, headers=header)
-    bs = BeautifulSoup(r.content,'lxml')
-    links = bs.select('a')
-    base_link='https://github.com/'
-    for link in links:
-        if target in link.attrs['href']:
-            target_link = base_link + link.attrs['href']
-            target_filename = target_link.split('/')[-1]
-            break
+    target_link = r.json()['assets'][0]['browser_download_url']
+    target_filename = target_link.split('/')[-1]
+    print(target_link)
+    print(target_filename)
     download(target_link,target_filename)
     return target_filename
 
@@ -97,13 +94,12 @@ def copy_files(src, dst):
 
 def run(target_usb_device, progress_bar):
     #downloadlist = ['https://github.com/Team-Neptune/DeepSea/releases','https://github.com/ITotalJustice/patches/releases','https://github.com/Atmosphere-NX/Atmosphere/releases']
-    downloadlist = ['https://github.com/THZoria/AtmoPack-Vanilla/releases','https://github.com/CTCaer/hekate/releases']
-    keywordlist = ['Latest','hekate']
+    downloadlist = ['https://api.github.com/repos/THZoria/AtmoPack-Vanilla/releases/latest','https://api.github.com/repos/CTCaer/hekate/releases/latest']
     logging.error('설치할 파일을 다운로드 중입니다.')
     progress_bar.setValue(10)
     copy_file_list = []
     for i in range(len(downloadlist)):
-      copy_file_list.append(download_url(downloadlist[i], keywordlist[i]))
+      copy_file_list.append(download_url(downloadlist[i]))
 
     logging.error('다운로드가 완료 되었습니다.')
     logging.error('===Download list====')
@@ -113,7 +109,7 @@ def run(target_usb_device, progress_bar):
 
     folder_name = datetime.datetime.now().strftime('%Y-%m-%d')
     extract_zip(folder_name, copy_file_list)
-    modify_ini_file(folder_name)
+    #modify_ini_file(folder_name)
     progress_bar.setValue(80)
     copy_files(folder_name, target_usb_device)
     for copy_file in copy_file_list:
