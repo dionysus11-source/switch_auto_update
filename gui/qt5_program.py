@@ -5,14 +5,11 @@ from PyQt5.QtCore import QThread
 from PyQt5 import uic
 import qdarkstyle
 import wmi
-import Deepsea
-import updater
 import logging
 import pythoncom
+from Downloader import Downloader
 
 os.environ['QT_API'] = 'pyqt5'
-
-
 
 form_class = uic.loadUiType("switch_downloader.ui")[0]
 class LogStringHandler(logging.Handler):
@@ -31,7 +28,6 @@ class WindowClass(QMainWindow, form_class):
         x = usbThread(self,parent=self)
         x.start()
         self.usbSelect.currentIndexChanged.connect(self.select_usb_drive)
-        self.deepseaButton.clicked.connect(self.deepsea_first)
         self.updaterButton.clicked.connect(self.update_cfw)
         self.progressBar.setValue(0)
         logger = logging.getLogger()
@@ -39,21 +35,15 @@ class WindowClass(QMainWindow, form_class):
         logging.error('hekate/atmosphere make program')
         self.select_usb_drive()
 
-    def deepsea_first(self):
-        self.progressBar.setValue(0)
-        print(self.__selected_drive)
-        if self.__selected_drive == "":
-            logging.error('선택된 드라이브가 없습니다.')
-            return
-        Deepsea.run(self.__selected_drive, self.progressBar)
-        self.progressBar.setValue(100)
     def update_cfw(self):
+        downloadlist = ['https://api.github.com/repos/THZoria/AtmoPack-Vanilla/releases/latest','https://api.github.com/repos/CTCaer/hekate/releases/latest']
+        dl = Downloader(downloadlist)
         self.progressBar.setValue(0)
         print(self.__selected_drive)
         if self.__selected_drive == "":
             logging.error('선택된 드라이브가 없습니다.')
             return
-        updater.run(self.__selected_drive, self.progressBar)
+        dl.run(self.__selected_drive, self.progressBar)
         self.progressBar.setValue(100)
     def update_usb_drive(self):
         self.usbSelect.clear()

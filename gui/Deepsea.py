@@ -1,6 +1,4 @@
 import requests
-from bs4 import BeautifulSoup
-import lxml
 import zipfile
 import os
 from glob import glob
@@ -93,7 +91,6 @@ def copy_files(src, dst):
     recursive_overwrite('./'+ src, dst)
 
 def run(target_usb_device, progress_bar):
-    #downloadlist = ['https://github.com/Team-Neptune/DeepSea/releases','https://github.com/ITotalJustice/patches/releases','https://github.com/Atmosphere-NX/Atmosphere/releases']
     downloadlist = ['https://api.github.com/repos/THZoria/AtmoPack-Vanilla/releases/latest','https://api.github.com/repos/CTCaer/hekate/releases/latest']
     logging.error('설치할 파일을 다운로드 중입니다.')
     progress_bar.setValue(10)

@@ -23,8 +23,8 @@
       <height>351</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0,0,0">
-     <item row="1" column="2">
+    <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0,0">
+     <item row="1" column="1">
       <widget class="QPushButton" name="updaterButton">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -69,30 +69,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="deepseaButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>300</width>
-         <height>200</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Make Deepsea Firsttime</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
    <widget class="QProgressBar" name="progressBar">
@@ -125,7 +101,7 @@
      <x>0</x>
      <y>0</y>
      <width>1569</width>
-     <height>31</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
