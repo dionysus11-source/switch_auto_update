@@ -96,8 +96,9 @@ def copy_files(src, dst):
     recursive_overwrite('./'+ src, dst)
 
 def run(target_usb_device, progress_bar):
-    downloadlist = ['https://github.com/Team-Neptune/DeepSea/releases','https://github.com/ITotalJustice/patches/releases','https://github.com/Atmosphere-NX/Atmosphere/releases']
-    keywordlist = ['normal','fusee.zip', 'fusee.bin']
+    #downloadlist = ['https://github.com/Team-Neptune/DeepSea/releases','https://github.com/ITotalJustice/patches/releases','https://github.com/Atmosphere-NX/Atmosphere/releases']
+    downloadlist = ['https://github.com/THZoria/AtmoPack-Vanilla/releases','https://github.com/CTCaer/hekate/releases']
+    keywordlist = ['Latest','hekate']
     logging.error('설치할 파일을 다운로드 중입니다.')
     progress_bar.setValue(10)
     copy_file_list = []
