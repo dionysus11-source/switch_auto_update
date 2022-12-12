@@ -25,14 +25,14 @@ class WindowClass(QMainWindow, form_class):
         super().__init__()
         self.setupUi(self)
         #self.update_usb_drive()
-        x = usbThread(self,parent=self)
-        x.start()
         self.usbSelect.currentIndexChanged.connect(self.select_usb_drive)
         self.updaterButton.clicked.connect(self.update_cfw)
         self.progressBar.setValue(0)
         logger = logging.getLogger()
         logger.addHandler(LogStringHandler(self.testTextBrowser))
         logging.error('hekate/atmosphere make program')
+        x = usbThread(self,parent=self)
+        x.start()
         self.select_usb_drive()
 
     def update_cfw(self):
