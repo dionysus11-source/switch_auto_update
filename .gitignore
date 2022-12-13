@@ -1,3 +1,4 @@
-./gui/dist
-./gui/build
+./dist
+./build
 *.ipynb
+*.pyc
