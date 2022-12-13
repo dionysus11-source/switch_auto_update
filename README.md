@@ -8,7 +8,7 @@ Tool for making atmosphere/hekate booting SD card.
 
 2. 프로그램을 실행
 
-3. pc에 연결한 usb 드라이버 선택
+3. pc에 연결한 usb 드라이브 문자 선택
 
 4. 처음 사용자인 경우 "Update hekate/atmospere' 클릭
 
