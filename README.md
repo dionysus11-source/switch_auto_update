@@ -2,6 +2,10 @@
 
 Tool for making atmosphere/hekate booting SD card.
 
+Get files from below site
+1. https://github.com/THZoria/AtmoPack-Vanilla
+2. https://github.com/CTCaer/hekate
+
 ## How to use
 
 1. 마이크로 sd를 usb 리더기에 넣은 후 pc에 연결합니다.
