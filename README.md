@@ -10,15 +10,21 @@ Tool for making atmosphere/hekate booting SD card.
 
 3. pc에 연결한 usb 드라이버 선택
 
-4. 처음 사용자인 경우 Make Deepsea Firsttime, 이미 설치한 적 있고 단순히 업데이트를 위해서라면 "Update hekate/atmospere'
+4. 처음 사용자인 경우 "Update hekate/atmospere' 클릭
 
-5. usb드라이브 최상위 폴더를 찾아보면 hekae_ctcaer_x.bin 을 pc에 복사한 후에 usb를 뽑고 sd 카드를 스위치에 넣는다 ")
+![SWITCH_AUTO](https://user-images.githubusercontent.com/52480056/207198477-1716eb6e-f5d7-4ec1-a243-81ebd41d34b8.gif)
 
-6. 리커버리 모드 진입 : 볼륨 업 + 전원 + 지그" 후에 TegraRCM GUI 실행 
+5. usb를 뽑고 sd 카드를 스위치에 넣는다
 
-7. TegraRCM Gui에서 hekae_ctcaer_x.bin을 선택 후 Inject payload 클릭하여 Hekate로 부팅 
+6. 리커버리 모드 진입 : 지그 장착 후 볼륨 업 + 전원 길게 누른 이후 TegraRCM GUI.EXE 실행 
 
-8. 아이콘 중에서 payloads 아이콘 클릭-> fusee.bin 선택하여 부팅
+7. TegraRCM Gui에서 최신 버전 hekae_ctcaer_x.bin을 선택 후 Inject payload 클릭하여 Hekate로 부팅
+
+**최신버전 BIN 파일은 프로그램을 실행시킨 폴더에 날짜 이름의 폴더 하위에 있음**
+<img width="630" alt="HEKATE_1" src="https://user-images.githubusercontent.com/52480056/207199026-02603355-590f-4ade-b913-27a312413cbc.PNG">
+
+
+8. 부팅 이후의 세번째 아이콘 - payloads 클릭-> fusee.bin 선택하여 부팅
 
 ---------------------------------------------------------------------------------
 
