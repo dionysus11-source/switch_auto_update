@@ -8,6 +8,7 @@ import wmi
 import logging
 import pythoncom
 from Downloader import Downloader
+import json
 
 os.environ['QT_API'] = 'pyqt5'
 
@@ -36,7 +37,9 @@ class WindowClass(QMainWindow, form_class):
         self.select_usb_drive()
 
     def update_cfw(self):
-        downloadlist = ['https://api.github.com/repos/THZoria/AtmoPack-Vanilla/releases/latest','https://api.github.com/repos/CTCaer/hekate/releases/latest']
+        with open('download_url.json', "r") as json_file:
+            downloadlist = json.load(json_file)['url']
+        #downloadlist = ['https://api.github.com/repos/THZoria/AtmoPack-Vanilla/releases/latest','https://api.github.com/repos/CTCaer/hekate/releases/latest']
         dl = Downloader(downloadlist)
         self.progressBar.setValue(0)
         print(self.__selected_drive)
