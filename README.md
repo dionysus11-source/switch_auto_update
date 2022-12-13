@@ -20,11 +20,15 @@ Tool for making atmosphere/hekate booting SD card.
 
 7. TegraRCM Gui에서 최신 버전 hekae_ctcaer_x.bin을 선택 후 Inject payload 클릭하여 Hekate로 부팅
 
-**최신버전 BIN 파일은 프로그램을 실행시킨 폴더에 날짜 이름의 폴더 하위에 있음**
+**최신버전 hekate.BIN 파일은 프로그램을 실행시킨 폴더에 날짜 이름의 폴더 하위에 있음**
+
 <img width="630" alt="HEKATE_1" src="https://user-images.githubusercontent.com/52480056/207199026-02603355-590f-4ade-b913-27a312413cbc.PNG">
 
 
 8. 부팅 이후의 세번째 아이콘 - payloads 클릭-> fusee.bin 선택하여 부팅
+
+<img width="488" alt="payloads" src="https://user-images.githubusercontent.com/52480056/207199484-879cfe47-4ad7-44a8-b6fc-b0ff37da97b2.PNG">
+
 
 ---------------------------------------------------------------------------------
 
