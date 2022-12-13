@@ -7,7 +7,7 @@ import qdarkstyle
 import wmi
 import logging
 import pythoncom
-from Downloader import Downloader
+from downloader.Downloader import Downloader
 import json
 
 os.environ['QT_API'] = 'pyqt5'
