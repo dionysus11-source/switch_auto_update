@@ -117,9 +117,10 @@ class Downloader:
                 os.remove(copy_file)
         logging.error("모든 복사가 끝났습니다. 다음에 할일")
         logging.error("=========================================================================================")
-        logging.error("1. 리커버리 모드 진입 : 볼륨 업 + 전원 + 지그")
-        logging.error("2. TegraRCM GUI 실행 후 날짜 폴더(ex. 2022-12-12)를 찾아보면 hekae_ctcaer_x.bin 을 넣을 파일로 선택")
-        logging.error("3. Inject payload 클릭하여 Hekate 부팅 후 첫번째 아이콘 선택")
+        logging.error("1. 리커버리 모드 진입 : 볼륨 업 + 전원 길게 누르기")
+        logging.error("2. 컴퓨터에 usb 연결 후 TegraRCM GUI 실행")
+        logging.error("3. 폴더 모양 아이콘 클릭 후 hekate_ctcaer_x.bin 선택 (날짜 폴더(ex. 2022-12-12)를 찾아보면 최신 hekae_ctcaer_x.bin가 있음)")
+        logging.error("4. Inject payload 클릭하여 Hekate 부팅 후 나타나는 스위치 그림에서 세번째 아이콘(Payloads) 선택 -> fusee.bin 선택")
         logging.error("=========================================================================================")
 
     def modify_ini_file(self, folder_name):
