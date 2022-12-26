@@ -1,7 +1,7 @@
 import sys
 import os
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import QThread
+from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5 import uic
 import qdarkstyle
 import wmi
@@ -11,15 +11,7 @@ from downloader.Downloader import Downloader
 import json
 
 os.environ['QT_API'] = 'pyqt5'
-
 form_class = uic.loadUiType("switch_downloader.ui")[0]
-class LogStringHandler(logging.Handler):
-    def __init__(self, target_widget):
-        super(LogStringHandler, self).__init__()
-        self.target_widget=target_widget 
-
-    def emit(self, record):
-        self.target_widget.append(' -- ' + record.getMessage())
         
 class WindowClass(QMainWindow, form_class):
     def __init__(self):
@@ -29,12 +21,17 @@ class WindowClass(QMainWindow, form_class):
         self.usbSelect.currentIndexChanged.connect(self.select_usb_drive)
         self.updaterButton.clicked.connect(self.update_cfw)
         self.progressBar.setValue(0)
-        logger = logging.getLogger()
-        logger.addHandler(LogStringHandler(self.testTextBrowser))
-        logging.error('hekate/atmosphere make program')
-        x = usbThread(self,parent=self)
+        #logger = logging.getLogger()
+        #logger.addHandler(LogStringHandler(self.testTextBrowser))
+        self.print_message('hekate/atmosphere make program')
+        x = usbThread(self, parent=self)
+        x.print_message.connect(self.print_message)
         x.start()
         self.select_usb_drive()
+    
+    def print_message(self, message):
+        #self.testTextBrowser.insertPlainText(' -- ' + message + '\n')
+        self.testTextBrowser.append(' -- ' + message)
 
     def update_cfw(self):
         with open('download_url.json', "r") as json_file:
@@ -44,7 +41,7 @@ class WindowClass(QMainWindow, form_class):
         self.progressBar.setValue(0)
         print(self.__selected_drive)
         if self.__selected_drive == "":
-            logging.error('선택된 드라이브가 없습니다.')
+            self.print_message('선택된 드라이브가 없습니다.')
             return
         dl.run(self.__selected_drive, self.progressBar)
         self.progressBar.setValue(100)
@@ -55,20 +52,20 @@ class WindowClass(QMainWindow, form_class):
         for disk in self.wmi.Win32_LogicalDisk():
             if disk.Description == '이동식 디스크':
                 usb_devices.append(disk.DeviceID )
-        logging.error("==== 현재 연결된 usb 목록 ====")
+        self.print_message("==== 현재 연결된 usb 목록 ====")
         for index, value in enumerate(usb_devices):
-            logging.error(str(index) + ": " + value)
+            self.print_message(str(index) + ": " + value)
             self.usbSelect.addItem(value)
         if len(usb_devices) > 1:
             self.__selected_drive = self.usbSelect.currentText()
 
-
     def select_usb_drive(self):
         self.__selected_drive = self.usbSelect.currentText()
-        logging.error("선택된 드라이브: " + self.__selected_drive)
+        self.print_message("선택된 드라이브: " + self.__selected_drive)
 
 class usbThread(QThread):
-    def __init__(self, app,parent=None):
+    print_message = pyqtSignal(str)
+    def __init__(self, app, parent=None):
         super().__init__(parent)
         self.app = app
     def run(self):
@@ -82,9 +79,9 @@ class usbThread(QThread):
             for disk in c.Win32_LogicalDisk():
                 if disk.Description == '이동식 디스크':
                     usb_devices.append(disk.DeviceID )
-            logging.error("==== 현재 연결된 usb 목록 ====")
+            self.print_message.emit("==== 현재 연결된 usb 목록 ====")
             for index, value in enumerate(usb_devices):
-                logging.error(str(index) + ": " + value)
+                self.print_message.emit(str(index) + ": " + value)
                 self.app.usbSelect.addItem(value)
             if len(usb_devices) > 1:
                 self.__selected_drive = self.app.usbSelect.currentText()
