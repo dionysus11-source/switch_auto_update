@@ -6,10 +6,13 @@ import shutil
 import datetime
 import sys
 import wmi
-import logging
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QObject
 
-class Downloader:
+class Downloader(QObject):
+    print_message = pyqtSignal(str)
     def __init__(self,download_list):
+        super().__init__()
         if type(download_list) is list:
             self.__download_list = download_list
         else:
@@ -32,7 +35,7 @@ class Downloader:
             if not os.path.exists(directory):
                 os.makedirs(directory)
         except OSError:
-            logging.error ('Error: Creating directory. ' +  directory)
+            self.print_message.emit('Error: Creating directory. ' +  directory)
         
     def recursive_overwrite(self, src, dest, ignore=None):
         if os.path.isdir(src):
@@ -59,12 +62,12 @@ class Downloader:
                 usb_device.append(disk.DeviceID )
 
 
-        logging.error("복사할 usb 드라이브를 선택하십시오")
-        logging.error("==== 현재 연결된 usb 목록 ====")
+        self.print_message.emit("복사할 usb 드라이브를 선택하십시오")
+        self.print_message.emit("==== 현재 연결된 usb 목록 ====")
         for index, value in enumerate(usb_device):
-            logging.error(str(index) + ": " + value)
+            self.print_message.emit(str(index) + ": " + value)
         input_cnt = len(usb_device)
-        logging.error(str(input_cnt) + ": 종료" )
+        self.print_message.emit(str(input_cnt) + ": 종료" )
         while True:
             drive = input()
             int_drive = int(drive)
@@ -72,7 +75,7 @@ class Downloader:
                 sys.exit()
             if ((int_drive >=0) and (int_drive < input_cnt)):
                 return usb_device[int_drive]
-            logging.error("잘못된 값을 입력하였습니다.")
+            self.print_message.emit("잘못된 값을 입력하였습니다.")
 
     def extract_zip(self, folder_name, files):
         cwd = os.getcwd()
@@ -93,16 +96,16 @@ class Downloader:
 
     def run(self, target_usb_device, progress_bar):
     #downloadlist = ['https://api.github.com/repos/THZoria/AtmoPack-Vanilla/releases/latest','https://api.github.com/repos/CTCaer/hekate/releases/latest']
-        logging.error('설치할 파일을 다운로드 중입니다.')
+        self.print_message.emit('설치할 파일을 다운로드 중입니다.')
         progress_bar.setValue(10)
         copy_file_list = []
         for i in range(len(self.__download_list)):
             copy_file_list.append(self.download_url(self.__download_list[i]))
         print(copy_file_list)
-        logging.error('다운로드가 완료 되었습니다.')
-        logging.error('===Download list====')
+        self.print_message.emit('다운로드가 완료 되었습니다.')
+        self.print_message.emit('===Download list====')
         for file in copy_file_list:
-            logging.error(file)
+            self.print_message.emit(file)
         progress_bar.setValue(50)
 
         folder_name = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -115,13 +118,13 @@ class Downloader:
                 continue
             else:
                 os.remove(copy_file)
-        logging.error("모든 복사가 끝났습니다. 다음에 할일")
-        logging.error("=========================================================================================")
-        logging.error("1. 리커버리 모드 진입 : 볼륨 업 + 전원 길게 누르기")
-        logging.error("2. 컴퓨터에 usb 연결 후 TegraRCM GUI 실행")
-        logging.error("3. 폴더 모양 아이콘 클릭 후 hekate_ctcaer_x.bin 선택 (날짜 폴더(ex. 2022-12-12)를 찾아보면 최신 hekae_ctcaer_x.bin가 있음)")
-        logging.error("4. Inject payload 클릭하여 Hekate 부팅 후 나타나는 스위치 그림에서 세번째 아이콘(Payloads) 선택 -> fusee.bin 선택")
-        logging.error("=========================================================================================")
+        self.print_message.emit("모든 복사가 끝났습니다. 다음에 할일")
+        self.print_message.emit("=========================================================================================")
+        self.print_message.emit("1. 리커버리 모드 진입 : 볼륨 업 + 전원 길게 누르기")
+        self.print_message.emit("2. 컴퓨터에 usb 연결 후 TegraRCM GUI 실행")
+        self.print_message.emit("3. 폴더 모양 아이콘 클릭 후 hekate_ctcaer_x.bin 선택 (날짜 폴더(ex. 2022-12-12)를 찾아보면 최신 hekae_ctcaer_x.bin가 있음)")
+        self.print_message.emit("4. Inject payload 클릭하여 Hekate 부팅 후 나타나는 스위치 그림에서 세번째 아이콘(Payloads) 선택 -> fusee.bin 선택")
+        self.print_message.emit("=========================================================================================")
 
     def modify_ini_file(self, folder_name):
         ini_file = folder_name + '/bootloader/hekate_ipl.ini'

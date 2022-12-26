@@ -5,7 +5,6 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5 import uic
 import qdarkstyle
 import wmi
-import logging
 import pythoncom
 from downloader.Downloader import Downloader
 import json
@@ -38,6 +37,7 @@ class WindowClass(QMainWindow, form_class):
             downloadlist = json.load(json_file)['url']
         #downloadlist = ['https://api.github.com/repos/THZoria/AtmoPack-Vanilla/releases/latest','https://api.github.com/repos/CTCaer/hekate/releases/latest']
         dl = Downloader(downloadlist)
+        dl.print_message.connect(self.print_message)
         self.progressBar.setValue(0)
         print(self.__selected_drive)
         if self.__selected_drive == "":
