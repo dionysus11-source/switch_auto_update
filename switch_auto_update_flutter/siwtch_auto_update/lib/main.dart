@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 void main() {
   runApp(const MyApp());
@@ -43,11 +44,17 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
   List<String> _usbDrivePaths = List.filled(0, "");
   String _selectedDrivePath = "";
   double _copyProgress = 0;
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _checkUsb();
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+      _usbDrivePaths = await _getUsbDrivePaths();
+      if (_usbDrivePaths.isNotEmpty) {
+        setState(() {});
+      }
+    });
   }
 
   Future<void> _checkUsb() async {
