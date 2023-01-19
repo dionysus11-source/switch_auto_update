@@ -84,7 +84,6 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
   }
 
   Future<void> _copyFolderToUsb() async {
-    print(_selectedDrivePath);
     if (_selectedDrivePath == "") {
       return;
     }
@@ -98,8 +97,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
     final Directory copiedFolder = Directory('$_selectedDrivePath/');
     final Stream<FileSystemEntity> entityList =
         folderToCopy.list(recursive: true, followLinks: false);
-    final int entityCount =
-        await folderToCopy.list(recursive: true, followLinks: false).length;
+    final int entityCount = await entityList.length;
     int copiedCount = 0;
 
     await entityList.forEach((FileSystemEntity entity) async {
