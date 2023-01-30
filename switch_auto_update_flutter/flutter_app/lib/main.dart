@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           // or simply save your changes to "hot reload" in a Flutter IDE).
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
-          primarySwatch: Colors.deepOrange),
+          primarySwatch: Colors.grey),
       home: MediaQuery(
         data: const MediaQueryData(
           size: Size(600, 800),
@@ -213,6 +213,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
         title: const Text('Switch Auto Updater'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           if (_usbDrivePaths == null)
             const CircularProgressIndicator()
@@ -224,7 +225,8 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
               ),
             )
           else
-            Expanded(
+            Container(
+              height: 300,
               child: ListView.builder(
                 itemCount: _usbDrivePaths.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -243,8 +245,11 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
           if (_selectedDrivePath != null)
             Column(
               children: [
-                LinearProgressIndicator(
+                CircularProgressIndicator(
                   value: _copyProgress,
+                ),
+                const SizedBox(
+                  height: 5,
                 ),
                 if (_copyProgress < 1)
                   ElevatedButton(
@@ -256,14 +261,13 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
                       ),
                     ),
                   )
-                else if (_copyProgress == 100)
+                else if (_copyProgress == 1)
                   const Text('Copy complete'),
               ],
             ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromRGBO(254, 110, 14, 1),
         onPressed: _copyFolderToUsb,
         child: const Icon(
           Icons.content_copy,
