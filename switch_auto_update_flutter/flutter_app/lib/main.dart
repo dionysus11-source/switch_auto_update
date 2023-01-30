@@ -214,24 +214,30 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (_usbDrivePaths == null)
             const CircularProgressIndicator()
-          else if (_usbDrivePaths.isEmpty)
+          /*else if (_usbDrivePaths.isEmpty)
             const Text(
               'No USB drive detected',
               style: TextStyle(
-                fontSize: 15,
+                fontSize: 35,
               ),
-            )
+            )*/
           else
             Container(
-              height: 300,
+              height: 200,
               child: ListView.builder(
                 itemCount: _usbDrivePaths.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
-                    title: Text(_usbDrivePaths[index]),
+                    title: Text(
+                      _usbDrivePaths[index],
+                      style: TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
                     onTap: () {
                       setState(() {
                         _selectedDrivePath = _usbDrivePaths[index];
@@ -242,29 +248,24 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
                 },
               ),
             ),
-          if (_selectedDrivePath != null)
-            Column(
-              children: [
-                CircularProgressIndicator(
-                  value: _copyProgress,
+          CircularProgressIndicator(
+            value: _copyProgress,
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          if (_copyProgress < 1)
+            ElevatedButton(
+              onPressed: _checkUsb,
+              child: const Text(
+                'Refresh USB Drive List',
+                style: TextStyle(
+                  fontSize: 20,
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
-                if (_copyProgress < 1)
-                  ElevatedButton(
-                    onPressed: _checkUsb,
-                    child: const Text(
-                      'Refresh USB Drive List',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  )
-                else if (_copyProgress == 1)
-                  const Text('Copy complete'),
-              ],
-            ),
+              ),
+            )
+          else if (_copyProgress == 1)
+            const Text('Copy complete'),
         ],
       ),
       floatingActionButton: FloatingActionButton(
