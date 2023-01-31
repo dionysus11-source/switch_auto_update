@@ -239,7 +239,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
               height: 120,
             ),
             Text(
-              'Selected USB',
+              'Selected USB $_selectedDrivePath',
               style: TextStyle(
                 color: Colors.white.withOpacity(0.8),
                 fontSize: 22,
@@ -250,30 +250,88 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                MyButton(
-                  text: "Refresh",
-                  bgColor: Color(0xFFF1B33B),
-                  textColor: Colors.black,
+              children: [
+                InkWell(
+                  onTap: _checkUsb,
+                  child: const MyButton(
+                    text: "Refresh",
+                    bgColor: Color(0xFFF1B33B),
+                    textColor: Colors.black,
+                  ),
                 ),
-                MyButton(
-                  text: "Copy",
-                  bgColor: Color(0xFF1F2123),
-                  textColor: Colors.white,
+                InkWell(
+                  onTap: _copyFolderToUsb,
+                  child: const MyButton(
+                    text: "Copy",
+                    bgColor: Color(0xFF1F2123),
+                    textColor: Colors.white,
+                  ),
                 ),
-                Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 40,
-                    ),
-                    child: Text(
-                      'Copy',
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                      ),
-                    ))
               ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Drives',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 36,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  'View All',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              height: 200,
+              child: ListView.builder(
+                itemCount: _usbDrivePaths.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      setState(() {
+                        _selectedDrivePath = _usbDrivePaths[index];
+                      });
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF1F2123),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 20,
+                            horizontal: 20,
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                _usbDrivePaths[index],
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w200,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )),
+                  );
+                },
+              ),
             ),
             if (_usbDrivePaths == null)
               const CircularProgressIndicator()
@@ -313,18 +371,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
             const SizedBox(
               height: 5,
             ),
-            if (_copyProgress < 1)
-              ElevatedButton(
-                onPressed: _checkUsb,
-                child: const Text(
-                  'Refresh USB Drive List',
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
-              )
-            else if (_copyProgress == 1)
-              const Text('Copy complete'),
+            if (_copyProgress == 1) const Text('Copy complete'),
           ],
         ),
       ),
