@@ -3,10 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
 import 'package:archive/archive_io.dart';
-import 'package:path/path.dart' as path;
-import 'package:flutter_archive/flutter_archive.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,7 +47,6 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
   List<String> _usbDrivePaths = List.filled(0, "");
   String _selectedDrivePath = "";
   double _copyProgress = 0;
-  late Timer _timer;
 
   @override
   void initState() {
@@ -79,9 +75,6 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
     ]).then((value) {
       //List<String> ret = value.stdout;
       List<String> driveIds = value.stdout.split("\r\n");
-      var drives = driveIds
-          .where((e) => e.isNotEmpty && !e.contains("DeviceID"))
-          .toList();
       for (var item in driveIds) {
         String tmp = item.replaceAll('"', '');
         tmp = tmp.replaceAll(RegExp(r'\s+'), '');
@@ -89,7 +82,6 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
           ret.add(tmp);
         }
       }
-      print(ret);
     });
     return ret;
   }
@@ -108,7 +100,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
     };
     // Send GET request to API endpoint
     final response = await http.get(Uri.parse(url), headers: headers);
-    final filename = './Download/' + url.split('/')[5] + '.zip';
+    final filename = './Download/${url.split('/')[5]}.zip';
     // Check if the request was successful
     if (response.statusCode == 200) {
       // Parse the JSON response
@@ -141,8 +133,8 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Copy to USB Memory'),
-            content: Text('USB Drive is not selected'),
+            title: const Text('Copy to USB Memory'),
+            content: const Text('USB Drive is not selected'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
@@ -166,13 +158,12 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
       "https://api.github.com/repos/CTCaer/hekate/releases/latest"
     ];
     for (var url in urls) {
-      try {
-        final filename = await downloadFile(url);
-        final file = File(filename);
-        file.deleteSync();
-      } catch (e) {
-        print("Error: $e");
-      }
+      downloadFile(url).then(
+        (value) {
+          final file = File(value);
+          file.deleteSync();
+        },
+      );
     }
     setState(() {
       _copyProgress = 0;
@@ -209,13 +200,37 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Switch Auto Updater'),
-      ),
+      backgroundColor: Colors.black,
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SizedBox(
+            height: 80,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Text(
+                    "Hey, Switch Users",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 38,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    "Welcome back",
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.8),
+                      fontSize: 28,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
           if (_usbDrivePaths == null)
             const CircularProgressIndicator()
           /*else if (_usbDrivePaths.isEmpty)
@@ -226,7 +241,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
               ),
             )*/
           else
-            Container(
+            SizedBox(
               height: 200,
               child: ListView.builder(
                 itemCount: _usbDrivePaths.length,
@@ -234,7 +249,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
                   return ListTile(
                     title: Text(
                       _usbDrivePaths[index],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 30,
                       ),
                     ),
