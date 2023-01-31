@@ -151,6 +151,9 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
       );
       return;
     }
+    setState(() {
+      _copyProgress = 0.01;
+    });
     final folder = Directory('./Download');
     if (folder.existsSync()) {
       folder.deleteSync(recursive: true);
@@ -169,9 +172,6 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
         print("Error: $e");
       }
     }
-    setState(() {
-      _copyProgress = 0;
-    });
     final Directory folderToCopy = Directory('./Download');
     if (!folderToCopy.existsSync()) {
       folderToCopy.createSync();
@@ -351,13 +351,6 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
             ),
             if (_usbDrivePaths == null)
               const CircularProgressIndicator()
-            /*else if (_usbDrivePaths.isEmpty)
-              const Text(
-                'No USB drive detected',
-                style: TextStyle(
-                  fontSize: 35,
-                ),
-              )*/
             else
               CircularProgressIndicator(
                 value: _copyProgress,
@@ -366,8 +359,22 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
               height: 5,
             ),
             if (_copyProgress == 1)
+              const Text('Copy complete! Remove Usb memory',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                  )),
+            if (_copyProgress == 0.01)
               const Text(
-                'Copy complete',
+                'Downloading in progress...',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                ),
+              )
+            else if (_copyProgress > 0.01 && _copyProgress < 1)
+              const Text(
+                'Copy in progress...',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 30,
