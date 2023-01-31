@@ -159,12 +159,13 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
       "https://api.github.com/repos/CTCaer/hekate/releases/latest"
     ];
     for (var url in urls) {
-      downloadFile(url).then(
-        (value) {
-          final file = File(value);
-          file.deleteSync();
-        },
-      );
+      try {
+        final filename = await downloadFile(url);
+        final file = File(filename);
+        file.deleteSync();
+      } catch (e) {
+        print("Error: $e");
+      }
     }
     setState(() {
       _copyProgress = 0;
@@ -343,42 +344,14 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
                 ),
               )*/
             else
-              SizedBox(
-                height: 200,
-                child: ListView.builder(
-                  itemCount: _usbDrivePaths.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      title: Text(
-                        _usbDrivePaths[index],
-                        style: const TextStyle(
-                          fontSize: 30,
-                        ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          _selectedDrivePath = _usbDrivePaths[index];
-                        });
-                      },
-                      selected: _selectedDrivePath == _usbDrivePaths[index],
-                    );
-                  },
-                ),
+              CircularProgressIndicator(
+                value: _copyProgress,
               ),
-            CircularProgressIndicator(
-              value: _copyProgress,
-            ),
             const SizedBox(
               height: 5,
             ),
             if (_copyProgress == 1) const Text('Copy complete'),
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _copyFolderToUsb,
-        child: const Icon(
-          Icons.content_copy,
         ),
       ),
     );
