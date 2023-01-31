@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:archive/archive_io.dart';
+import 'package:flutter_app/widgets/button.dart';
 
 void main() {
   runApp(const MyApp());
@@ -200,88 +201,132 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 80,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const Text(
-                    "Hey, Switch Users",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 38,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    "Welcome back",
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.8),
-                      fontSize: 28,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-          if (_usbDrivePaths == null)
-            const CircularProgressIndicator()
-          /*else if (_usbDrivePaths.isEmpty)
-            const Text(
-              'No USB drive detected',
-              style: TextStyle(
-                fontSize: 35,
-              ),
-            )*/
-          else
-            SizedBox(
-              height: 200,
-              child: ListView.builder(
-                itemCount: _usbDrivePaths.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    title: Text(
-                      _usbDrivePaths[index],
-                      style: const TextStyle(
-                        fontSize: 30,
+      backgroundColor: const Color(0xFF181818),
+      body: Padding(
+        padding: const EdgeInsets.all(40),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 80,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      "Hey, Switch Users",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    onTap: () {
-                      setState(() {
-                        _selectedDrivePath = _usbDrivePaths[index];
-                      });
-                    },
-                    selected: _selectedDrivePath == _usbDrivePaths[index],
-                  );
-                },
+                    Text(
+                      "Welcome back",
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.8),
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 120,
+            ),
+            Text(
+              'Selected USB',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+                fontSize: 22,
               ),
             ),
-          CircularProgressIndicator(
-            value: _copyProgress,
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          if (_copyProgress < 1)
-            ElevatedButton(
-              onPressed: _checkUsb,
-              child: const Text(
-                'Refresh USB Drive List',
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                MyButton(
+                  text: "Refresh",
+                  bgColor: Color(0xFFF1B33B),
+                  textColor: Colors.black,
+                ),
+                MyButton(
+                  text: "Copy",
+                  bgColor: Color(0xFF1F2123),
+                  textColor: Colors.white,
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 20,
+                      horizontal: 40,
+                    ),
+                    child: Text(
+                      'Copy',
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: Colors.white,
+                      ),
+                    ))
+              ],
+            ),
+            if (_usbDrivePaths == null)
+              const CircularProgressIndicator()
+            /*else if (_usbDrivePaths.isEmpty)
+              const Text(
+                'No USB drive detected',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 35,
+                ),
+              )*/
+            else
+              SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  itemCount: _usbDrivePaths.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      title: Text(
+                        _usbDrivePaths[index],
+                        style: const TextStyle(
+                          fontSize: 30,
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _selectedDrivePath = _usbDrivePaths[index];
+                        });
+                      },
+                      selected: _selectedDrivePath == _usbDrivePaths[index],
+                    );
+                  },
                 ),
               ),
-            )
-          else if (_copyProgress == 1)
-            const Text('Copy complete'),
-        ],
+            CircularProgressIndicator(
+              value: _copyProgress,
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            if (_copyProgress < 1)
+              ElevatedButton(
+                onPressed: _checkUsb,
+                child: const Text(
+                  'Refresh USB Drive List',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              )
+            else if (_copyProgress == 1)
+              const Text('Copy complete'),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _copyFolderToUsb,
