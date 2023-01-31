@@ -53,7 +53,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
   @override
   void initState() {
     super.initState();
-    DesktopWindow.setWindowSize(const Size(800, 1024));
+    DesktopWindow.setWindowSize(const Size(600, 800));
     /*
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       _usbDrivePaths = await _getUsbDrivePaths();
@@ -211,7 +211,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 80,
+              height: 20,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -239,7 +239,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
               ],
             ),
             const SizedBox(
-              height: 120,
+              height: 20,
             ),
             Text(
               'Selected USB $_selectedDrivePath',
