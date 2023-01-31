@@ -309,15 +309,17 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
                       });
                     },
                     child: Container(
+                        clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
                             color: const Color(0xFF1F2123),
                             borderRadius: BorderRadius.circular(20)),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                            vertical: 20,
-                            horizontal: 20,
+                            vertical: 30,
+                            horizontal: 30,
                           ),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Text(
                                 _usbDrivePaths[index],
@@ -325,6 +327,17 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
                                   color: Colors.white,
                                   fontSize: 32,
                                   fontWeight: FontWeight.w200,
+                                ),
+                              ),
+                              Transform.scale(
+                                scale: 2.2,
+                                child: Transform.translate(
+                                  offset: const Offset(-5, 12),
+                                  child: const Icon(
+                                    Icons.usb_rounded,
+                                    color: Colors.white,
+                                    size: 88,
+                                  ),
                                 ),
                               ),
                             ],
@@ -350,7 +363,14 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
             const SizedBox(
               height: 5,
             ),
-            if (_copyProgress == 1) const Text('Copy complete'),
+            if (_copyProgress == 1)
+              const Text(
+                'Copy complete',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 30,
+                ),
+              ),
           ],
         ),
       ),
