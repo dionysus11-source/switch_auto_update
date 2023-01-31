@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:archive/archive_io.dart';
 import 'package:flutter_app/widgets/button.dart';
+import 'package:desktop_window/desktop_window.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,6 +53,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
   @override
   void initState() {
     super.initState();
+    DesktopWindow.setWindowSize(const Size(800, 1024));
     /*
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       _usbDrivePaths = await _getUsbDrivePaths();
