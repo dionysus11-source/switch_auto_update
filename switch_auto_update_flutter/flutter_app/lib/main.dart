@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:archive/archive_io.dart';
-import 'package:flutter_app/widgets/button.dart';
+import 'package:switch_auto_updater/widgets/button.dart';
 import 'package:desktop_window/desktop_window.dart';
 
 void main() {

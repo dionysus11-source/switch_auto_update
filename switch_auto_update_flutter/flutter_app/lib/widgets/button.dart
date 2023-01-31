@@ -29,6 +29,7 @@ class MyButton extends StatelessWidget {
             style: TextStyle(
               fontSize: 22,
               color: textColor,
+              fontWeight: FontWeight.w600,
             ),
           )),
     );
