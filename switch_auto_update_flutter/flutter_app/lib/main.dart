@@ -49,6 +49,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
   List<String> _usbDrivePaths = List.filled(0, "");
   String _selectedDrivePath = "";
   double _copyProgress = 0;
+  bool isDownloading = false;
 
   @override
   void initState() {
@@ -107,6 +108,9 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
     // Check if the request was successful
     if (response.statusCode == 200) {
       // Parse the JSON response
+      setState(() {
+        isDownloading = true;
+      });
 
       final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
       // Get the download URL
@@ -123,6 +127,9 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
       // Close the stream
       await sink.close();
       await extractZipFile(filename);
+      setState(() {
+        isDownloading = false;
+      });
       // Handle the downloaded file
     } else {
       // Handle the error
@@ -352,34 +359,51 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
             if (_usbDrivePaths == null)
               const CircularProgressIndicator()
             else
-              CircularProgressIndicator(
-                value: _copyProgress,
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (!isDownloading)
+                          CircularProgressIndicator(
+                            value: _copyProgress,
+                          )
+                        else
+                          const CircularProgressIndicator(),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        if (_copyProgress == 1)
+                          const Text('Copy complete! Remove Usb memory',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30,
+                              )),
+                        if (_copyProgress == 0.01)
+                          const Text(
+                            'Downloading...',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                            ),
+                          )
+                        else if (_copyProgress > 0.01 && _copyProgress < 1)
+                          const Text(
+                            'Copy In Progress...',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                            ),
+                          )
+                      ],
+                    ),
+                  ),
+                ],
               ),
             const SizedBox(
               height: 5,
             ),
-            if (_copyProgress == 1)
-              const Text('Copy complete! Remove Usb memory',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                  )),
-            if (_copyProgress == 0.01)
-              const Text(
-                'Downloading in progress...',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                ),
-              )
-            else if (_copyProgress > 0.01 && _copyProgress < 1)
-              const Text(
-                'Copy in progress...',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                ),
-              ),
           ],
         ),
       ),
