@@ -41,6 +41,8 @@ dependencies:
   archive: ^3.3.6
   flutter_archive: ^5.0.0
   desktop_window: ^0.4.0
+  msix : ^3.7.0
+  
 
 dev_dependencies:
   flutter_test:
