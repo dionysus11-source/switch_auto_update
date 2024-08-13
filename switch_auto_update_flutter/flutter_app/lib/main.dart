@@ -157,7 +157,7 @@ class _UsbCopyAppState extends State<UsbCopyApp> {
     }
     folder.createSync();
     List<String> urls = [
-      "https://api.github.com/repos/THZoria/AtmoPack-Vanilla/releases/latest",
+      "https://codeberg.org/api/v1/repos/Zoria/AtmoPack-Vanilla/releases/latest",
       "https://api.github.com/repos/CTCaer/hekate/releases/latest"
     ];
     for (var url in urls) {
