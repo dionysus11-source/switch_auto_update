@@ -18,15 +18,17 @@ Get files from below site
 
 ![SWITCH_AUTO](https://user-images.githubusercontent.com/52480056/207198477-1716eb6e-f5d7-4ec1-a243-81ebd41d34b8.gif)
 
+5. usb 를 뽑기전에 hekate.bin 파일을 백업합니다.
+
+6. **최신버전 hekate.BIN 파일은 프로그램을 실행시킨 폴더에 날짜 이름의 폴더 하위에 있음**
+
+<img width="630" alt="HEKATE_1" src="https://user-images.githubusercontent.com/52480056/207199026-02603355-590f-4ade-b913-27a312413cbc.PNG">
+
 5. usb를 뽑고 sd 카드를 스위치에 넣는다
 
 6. 리커버리 모드 진입 : 지그 장착 후 볼륨 업 + 전원 길게 누른 이후 TegraRCM GUI.EXE 실행 
 
-7. TegraRCM Gui에서 최신 버전 hekae_ctcaer_x.bin을 선택 후 Inject payload 클릭하여 Hekate로 부팅
-
-**최신버전 hekate.BIN 파일은 프로그램을 실행시킨 폴더에 날짜 이름의 폴더 하위에 있음**
-
-<img width="630" alt="HEKATE_1" src="https://user-images.githubusercontent.com/52480056/207199026-02603355-590f-4ade-b913-27a312413cbc.PNG">
+7. TegraRCM Gui에서 아까 백업해둔 최신 버전 hekae_ctcaer_x.bin을 선택 후 Inject payload 클릭하여 Hekate로 부팅
 
 
 8. 부팅 이후의 세번째 아이콘 - payloads 클릭-> fusee.bin 선택하여 부팅
